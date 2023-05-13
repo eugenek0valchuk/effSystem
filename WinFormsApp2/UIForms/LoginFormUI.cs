@@ -1,4 +1,9 @@
-﻿public class LoginFormUI : Form
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using InvestmentProjectEvaluator;
+
+public class LoginFormUI : Form
 {
     private TextBox txtUsername;
     private TextBox txtPassword;
@@ -17,14 +22,12 @@
 
     private void InitializeComponents()
     {
-        // Set form properties
         Text = "Login Form";
         Size = new System.Drawing.Size(300, 200);
         StartPosition = FormStartPosition.CenterScreen;
         FormBorderStyle = FormBorderStyle.FixedSingle;
         MaximizeBox = false;
 
-        // Create controls
         Label lblUsername = new Label
         {
             Text = "Username:",
@@ -43,7 +46,9 @@
             Text = "Password:",
             Location = new System.Drawing.Point(20, 60),
             AutoSize = true
-        }; txtPassword = new TextBox
+        };
+
+        txtPassword = new TextBox
         {
             Location = new System.Drawing.Point(120, 60),
             Size = new System.Drawing.Size(150, 25),
@@ -100,7 +105,6 @@
             MessageBox.Show("Please enter both a username and password.", "Authentication Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
-
 
     private void btnRegister_Click(object sender, EventArgs e)
     {

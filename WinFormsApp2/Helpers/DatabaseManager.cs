@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 public class DatabaseManager
 {
@@ -21,16 +22,104 @@ public class DatabaseManager
         }
     }
 
-    public void CreateDatabaseAndTables()
+    public Calculation GetCalculation(int calculationId)
     {
-        try
+        string getCalculationQuery = "SELECT * FROM [Calculation] WHERE Id = @CalculationId";
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        using (SqlCommand command = new SqlCommand(getCalculationQuery, connection))
         {
-            CreateDatabase();
-            CreateTables();
+            try
+            {
+                connection.Open();
+                command.Parameters.AddWithValue("@CalculationId", calculationId);
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    Calculation calculation = new Calculation
+                    {
+                        Id = (int)reader["Id"],
+                        UserId = (int)reader["UserId"],
+                        InitialInvestment = (double)(decimal)reader["InitialInvestment"],
+                        DiscountRate = (double)(decimal)reader["DiscountRate"],
+                        InflationRate = (double)(decimal)reader["InflationRate"],
+                        TaxRate = (double)(decimal)reader["TaxRate"],
+                        PoliticalStabilityRating = (int)reader["PoliticalStabilityRating"],
+                        NPV = (double)(decimal)reader["NPV"]
+                    };
+
+                    return calculation;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("Error retrieving the calculation: " + ex.Message);
+            }
         }
-        catch (Exception ex)
+
+        return null;
+    }
+
+    public List<Calculation> GetCalculations(int userId)
+    {
+        List<Calculation> calculations = new List<Calculation>();
+        string getCalculationsQuery = "SELECT * FROM [Calculation] WHERE UserId = @UserId";
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        using (SqlCommand command = new SqlCommand(getCalculationsQuery, connection))
         {
-            ShowErrorMessage("Error creating the database and tables: " + ex.Message);
+            try
+            {
+                command.Parameters.AddWithValue("@UserId", userId);
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Calculation calculation = new Calculation
+                    {
+                        Id = (int)reader["Id"],
+                        UserId = (int)reader["UserId"],
+                        InitialInvestment = (double)(decimal)reader["InitialInvestment"],
+                        DiscountRate = (double)(decimal)reader["DiscountRate"],
+                        InflationRate = (double)(decimal)reader["InflationRate"],
+                        TaxRate = (double)(decimal)reader["TaxRate"],
+                        PoliticalStabilityRating = (int)reader["PoliticalStabilityRating"],
+                        NPV = (double)(decimal)reader["NPV"]
+                    };
+
+                    calculations.Add(calculation);
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("Error retrieving calculations: " + ex.Message);
+            }
+        }
+
+        return calculations;
+    }
+
+    public bool DeleteCalculation(int calculationId)
+    {
+        string deleteCalculationQuery = "DELETE FROM [Calculation] WHERE Id = @CalculationId";
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        using (SqlCommand command = new SqlCommand(deleteCalculationQuery, connection))
+        {
+            try
+            {
+                connection.Open();
+                command.Parameters.AddWithValue("@CalculationId", calculationId);
+                int rowsAffected = command.ExecuteNonQuery();
+                return rowsAffected > 0;
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("Error deleting the calculation: " + ex.Message);
+                return false;
+            }
         }
     }
 
@@ -141,7 +230,6 @@ public class DatabaseManager
             return count > 0;
         }
     }
-
     public int AuthenticateUser(string username, string password)
     {
         string authenticateUserQuery = "SELECT Id FROM [User] WHERE Username = @Username AND Password = @Password";
@@ -168,8 +256,8 @@ public class DatabaseManager
     public bool SaveCalculation(int userId, double initialInvestment, double discountRate, double inflationRate, double taxRate, int politicalStabilityRating, double npv)
     {
         string saveCalculationQuery = @"
-        INSERT INTO [Calculation] (UserId, InitialInvestment, DiscountRate, InflationRate, TaxRate, PoliticalStabilityRating, NPV)
-        VALUES (@UserId, @InitialInvestment, @DiscountRate, @InflationRate, @TaxRate, @PoliticalStabilityRating, @NPV)";
+    INSERT INTO [Calculation] (UserId, InitialInvestment, DiscountRate, InflationRate, TaxRate, PoliticalStabilityRating, NPV)
+    VALUES (@UserId, @InitialInvestment, @DiscountRate, @InflationRate, @TaxRate, @PoliticalStabilityRating, @NPV)";
 
         using (SqlConnection connection = new SqlConnection(connectionString))
         using (SqlCommand command = new SqlCommand(saveCalculationQuery, connection))
@@ -195,7 +283,6 @@ public class DatabaseManager
         }
     }
 
-
     public DataTable GetCalculationHistory(int userId)
     {
         DataTable calculationHistory = new DataTable();
@@ -216,6 +303,48 @@ public class DatabaseManager
             }
         }
         return calculationHistory;
+    }
+
+    public string GetUsername(int userId)
+    {
+        string query = "SELECT Username FROM [User] WHERE Id = @UserId";
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        using (SqlCommand command = new SqlCommand(query, connection))
+        {
+            command.Parameters.AddWithValue("@UserId", userId);
+            connection.Open();
+            object result = command.ExecuteScalar();
+            return result != null ? result.ToString() : string.Empty;
+        }
+    }
+
+    public bool CheckUsernameExists(string username)
+    {
+        string query = "SELECT COUNT(*) FROM [User] WHERE Username = @Username";
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        using (SqlCommand command = new SqlCommand(query, connection))
+        {
+            command.Parameters.AddWithValue("@Username", username);
+            connection.Open();
+            int count = Convert.ToInt32(command.ExecuteScalar());
+            return count > 0;
+        }
+    }
+    public bool UpdateUsername(int userId, string newUsername)
+    {
+        string query = "UPDATE [User] SET Username = @NewUsername WHERE Id = @UserId";
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        using (SqlCommand command = new SqlCommand(query, connection))
+        {
+            command.Parameters.AddWithValue("@NewUsername", newUsername);
+            command.Parameters.AddWithValue("@UserId", userId);
+            connection.Open();
+            int rowsAffected = command.ExecuteNonQuery();
+            return rowsAffected > 0;
+        }
     }
 
     private void ShowErrorMessage(string message)

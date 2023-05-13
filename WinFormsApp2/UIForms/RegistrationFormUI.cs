@@ -1,4 +1,9 @@
-﻿public class RegistrationFormUI : Form
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using InvestmentProjectEvaluator;
+
+public class RegistrationFormUI : Form
 {
     private TextBox txtUsername;
     private TextBox txtPassword;
@@ -13,12 +18,12 @@
 
     private void InitializeComponents()
     {
-        // Set form properties
         Text = "Registration Form";
         Size = new System.Drawing.Size(300, 200);
         StartPosition = FormStartPosition.CenterScreen;
         FormBorderStyle = FormBorderStyle.FixedSingle;
-        MaximizeBox = false;// Create controls
+        MaximizeBox = false;
+
         Label lblUsername = new Label
         {
             Text = "Username:",

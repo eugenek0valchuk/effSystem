@@ -1,10 +1,15 @@
-﻿using InvestmentProjectEvaluator;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using WinFormsApp2;
+using WinFormsApp2.UIForms;
 
 public class MainMenuFormUI : Form
 {
     private Button btnCalculation;
     private Button btnHistory;
     private int userId;
+
     public MainMenuFormUI(int userId)
     {
         this.userId = userId;
@@ -22,7 +27,7 @@ public class MainMenuFormUI : Form
             Location = new System.Drawing.Point(100, 100),
             Size = new System.Drawing.Size(200, 40),
             Font = new Font("Arial", 12, FontStyle.Bold)
-        }; 
+        };
         btnHistory = new Button
         {
             Text = "View Calculation History",
@@ -40,9 +45,10 @@ public class MainMenuFormUI : Form
 
     private void btnCalculation_Click(object sender, EventArgs e)
     {
-        CalculationFormUI calculationForm = new CalculationFormUI(userId);
+        CalculationDetailsFormUI calculationForm = new CalculationDetailsFormUI(userId);
         calculationForm.ShowDialog();
     }
+
     private void btnHistory_Click(object sender, EventArgs e)
     {
         CalculationHistoryFormUI historyForm = new CalculationHistoryFormUI(userId);

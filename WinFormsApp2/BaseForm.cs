@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-
-namespace InvestmentProjectEvaluator
+﻿namespace InvestmentProjectEvaluator
 {
     public class BaseForm : Form
     {
@@ -61,7 +58,7 @@ namespace InvestmentProjectEvaluator
         private void ApplyButtonStyle(Button button, Font buttonFont)
         {
             button.Font = buttonFont;
-            button.BackColor = Color.FromArgb(45, 125, 154);
+            button.BackColor = CommonStyle.PrimaryColor;
             button.ForeColor = Color.White;
             button.FlatStyle = FlatStyle.Flat;
             button.FlatAppearance.BorderSize = 0;
@@ -72,9 +69,58 @@ namespace InvestmentProjectEvaluator
 
         private void ApplyTextBoxStyle(TextBox textBox)
         {
-            textBox.Font = new Font("Arial", 12);
-            textBox.BorderStyle = BorderStyle.FixedSingle; 
+            textBox.Font = CommonStyle.TextBoxFont;
+            textBox.BorderStyle = BorderStyle.FixedSingle;
             textBox.Padding = new Padding(5);
+        }
+
+        protected Label CreateLabel(string text, Point location)
+        {
+            return CreateLabel(text, location, CommonStyle.LabelFont);
+        }
+
+        protected Label CreateLabel(string text, Point location, Font font)
+        {
+            return new Label
+            {
+                Text = text,
+                Location = location,
+                AutoSize = true,
+                Font = font,
+                BackColor = Color.Transparent
+            };
+        }
+
+        protected PictureBox CreatePictureBox(Icon icon, Point location)
+        {
+            return new PictureBox
+            {
+                Image = icon.ToBitmap(),
+                SizeMode = PictureBoxSizeMode.StretchImage,
+                Size = new Size(20, 20),
+                Location = location,
+                Cursor = Cursors.Help
+            };
+        }
+
+        protected TextBox CreateTextBox(Point location, Size size)
+        {
+            return CreateTextBox(location, size, CommonStyle.TextBoxFont);
+        }
+
+        protected TextBox CreateTextBox(Point location, Size size, Font font)
+        {
+            return new TextBox
+            {
+                Size = size,
+                Location = location,
+                Font = font
+            };
+        }
+
+        protected void AddControls(params Control[] controls)
+        {
+            Controls.AddRange(controls);
         }
     }
 }
