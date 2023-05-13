@@ -1,6 +1,4 @@
-﻿using InvestmentProjectEvaluator;
-
-public class MainMenuFormUI : Form
+﻿public class MainMenuFormUI : Form
 {
     private Button btnCalculation;
     private Button btnHistory;
@@ -45,7 +43,7 @@ public class MainMenuFormUI : Form
     }
     private void btnHistory_Click(object sender, EventArgs e)
     {
-        CalculationHistoryFormUI historyForm = new CalculationHistoryFormUI(userId);
+        CalculationInfoFormUI historyForm = new CalculationInfoFormUI(userId);
         historyForm.ShowDialog();
     }
 }

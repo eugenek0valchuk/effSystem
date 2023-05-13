@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace InvestmentProjectEvaluator
+namespace WinFormsApp2.UIForms
 {
     public class BaseForm : Form
     {
@@ -73,7 +73,7 @@ namespace InvestmentProjectEvaluator
         private void ApplyTextBoxStyle(TextBox textBox)
         {
             textBox.Font = new Font("Arial", 12);
-            textBox.BorderStyle = BorderStyle.FixedSingle; 
+            textBox.BorderStyle = BorderStyle.FixedSingle;
             textBox.Padding = new Padding(5);
         }
     }

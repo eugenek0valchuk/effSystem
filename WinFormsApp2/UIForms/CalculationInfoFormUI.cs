@@ -4,13 +4,13 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-public class CalculationHistoryFormUI : Form
+public class CalculationInfoFormUI : Form
 {
     private DataGridView dgvCalculationHistory;
     private int userId;
     private DatabaseManager databaseManager;
 
-    public CalculationHistoryFormUI(int userId)
+    public CalculationInfoFormUI(int userId)
     {
         this.userId = userId;
         databaseManager = new DatabaseManager();
