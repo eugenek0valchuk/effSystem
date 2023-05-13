@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Compile Update="BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="CalculationHistoryFormUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UIForms\CalculationFormUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UIForms\MainMenuFormUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UIForms\LoginFormUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="UIForms\RegistrationFormUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>
