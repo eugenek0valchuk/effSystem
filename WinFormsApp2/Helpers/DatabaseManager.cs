@@ -262,7 +262,7 @@ public class DatabaseManager
     }
     public bool UsernameExists(string username)
     {
-        string checkUsernameQuery = "SELECT COUNT(*) FROM [User] WHERE Username = @Username"; 
+        string checkUsernameQuery = "SELECT COUNT(*) FROM [User] WHERE Username = @Username";
         using (SqlConnection connection = new SqlConnection(connectionString))
         using (SqlCommand command = new SqlCommand(checkUsernameQuery, connection))
         {

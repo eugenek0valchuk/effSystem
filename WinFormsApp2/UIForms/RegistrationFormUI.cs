@@ -1,4 +1,8 @@
-﻿public class RegistrationFormUI : BaseForm
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+public class RegistrationFormUI : BaseForm
 {
     private TextBox txtUsername;
     private TextBox txtPassword;
@@ -6,6 +10,7 @@
     private DatabaseManager databaseManager;
     private string registeredUsername;
     private string registeredPassword;
+    private ErrorProvider errorProvider;
 
     public RegistrationFormUI()
     {
@@ -21,16 +26,6 @@
         StartPosition = FormStartPosition.CenterScreen;
         FormBorderStyle = FormBorderStyle.FixedSingle;
         MaximizeBox = false;
-    }
-
-    public string GetRegisteredUsername()
-    {
-        return registeredUsername;
-    }
-
-    public string GetRegisteredPassword()
-    {
-        return registeredPassword;
     }
 
     private void InitializeComponents()
@@ -75,6 +70,15 @@
         Controls.Add(lblPassword);
         Controls.Add(txtPassword);
         Controls.Add(btnSubmit);
+
+        errorProvider = new ErrorProvider();
+        errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+        errorProvider.Icon = SystemIcons.Error;
+
+        errorProvider.SetIconAlignment(txtUsername, ErrorIconAlignment.MiddleLeft);
+        errorProvider.SetIconPadding(txtUsername, -20);
+        errorProvider.SetIconAlignment(txtPassword, ErrorIconAlignment.MiddleLeft);
+        errorProvider.SetIconPadding(txtPassword, -20);
     }
 
     private void btnSubmit_Click(object sender, EventArgs e)
@@ -101,5 +105,15 @@
         {
             MessageBox.Show("Please enter both a username and password.", "Registration Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
+    }
+
+    public string GetRegisteredUsername()
+    {
+        return registeredUsername;
+    }
+
+    public string GetRegisteredPassword()
+    {
+        return registeredPassword;
     }
 }

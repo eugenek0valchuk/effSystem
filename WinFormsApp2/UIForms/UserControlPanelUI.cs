@@ -4,9 +4,7 @@
     private DatabaseManager databaseManager;
     private Button btnUpdateCredentials;
     private TextBox txtNewPassword;
-    private TextBox txtNewUsername;
-
-    public UserControlPanelUI(int userId)
+    private TextBox txtNewUsername; public UserControlPanelUI(int userId)
     {
         this.userId = userId;
         databaseManager = new DatabaseManager();
@@ -64,6 +62,10 @@
             Size = new Size(150, 30)
         };
         btnUpdateCredentials.Click += btnUpdateCredentials_Click;
+
+        ToolTip toolTip = new ToolTip();
+        toolTip.SetToolTip(txtNewUsername, "Enter new username");
+        toolTip.SetToolTip(txtNewPassword, "Enter new password");
 
         Controls.Add(lblUsername);
         Controls.Add(txtUsername);
