@@ -4,13 +4,10 @@
     {
         ApplyCommonDesign();
     }
+
     protected virtual void ApplyCommonDesign()
     {
-        Text = "Investment Project Evaluator";
-        Size = new Size(400, 300);
-        StartPosition = FormStartPosition.CenterScreen;
-        FormBorderStyle = FormBorderStyle.FixedSingle;
-        MaximizeBox = false;
+        Font = new Font("Arial", 10);
         BackColor = Color.White;
     }
 }

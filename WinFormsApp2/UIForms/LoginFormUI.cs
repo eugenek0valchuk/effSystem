@@ -14,7 +14,15 @@
         databaseManager = new DatabaseManager();
         databaseManager.InitializeDatabase();
     }
-
+    protected override void ApplyCommonDesign()
+    {
+        base.ApplyCommonDesign();
+        Text = "Login Form";
+        Size = new Size(300, 200);
+        StartPosition = FormStartPosition.CenterScreen;
+        FormBorderStyle = FormBorderStyle.FixedSingle;
+        MaximizeBox = false;
+    }
     private void InitializeComponents()
     {
         Text = "Login Form";

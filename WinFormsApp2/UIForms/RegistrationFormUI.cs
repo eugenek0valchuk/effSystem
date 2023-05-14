@@ -10,7 +10,12 @@
         InitializeComponents();
         databaseManager = new DatabaseManager();
     }
-
+    protected override void ApplyCommonDesign()
+    {
+        base.ApplyCommonDesign();
+        Text = "Registration Form";
+        Size = new Size(300, 200);
+    }
     private void InitializeComponents()
     {
         Text = "Registration Form";

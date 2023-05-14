@@ -6,8 +6,7 @@ public class Program
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
         DatabaseManager databaseManager = new DatabaseManager();
-        databaseManager.InitializeDatabase();
-
+        databaseManager.InitializeDatabase(); 
         LoginFormUI loginForm = new LoginFormUI();
         loginForm.ShowDialog();
 

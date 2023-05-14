@@ -1,8 +1,8 @@
 ﻿public class UserControlPanelUI : BaseForm
 {
-    private CustomButton btnUpdateCredentials;
     private int userId;
     private DatabaseManager databaseManager;
+    private Button btnUpdateCredentials;
     private TextBox txtNewPassword;
     private TextBox txtNewUsername;
 
@@ -60,7 +60,7 @@
             PasswordChar = '*'
         };
 
-        btnUpdateCredentials = new CustomButton
+        btnUpdateCredentials = new Button
         {
             Text = "Update Credentials",
             Location = new Point(100, 160),
@@ -105,5 +105,12 @@
         {
             MessageBox.Show("Please enter both a new username and password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
+    }
+
+    protected override void ApplyCommonDesign()
+    {
+        base.ApplyCommonDesign();
+        Text = "User Control Panel";
+        Size = new Size(400, 300);
     }
 }
