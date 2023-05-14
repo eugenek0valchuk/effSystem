@@ -13,6 +13,7 @@
         InitializeComponents();
         databaseManager = new DatabaseManager();
         databaseManager.InitializeDatabase();
+        this.FormClosing += LoginFormUI_FormClosing;
     }
     protected override void ApplyCommonDesign()
     {
@@ -81,6 +82,14 @@
         Controls.Add(btnRegister);
     }
 
+    private void LoginFormUI_FormClosing(object sender, FormClosingEventArgs e)
+    {
+        if (DialogResult != DialogResult.OK)
+        {
+            Application.Exit();
+        }
+    }
+
     private void btnLogin_Click(object sender, EventArgs e)
     {
         string username = txtUsername.Text;
@@ -110,6 +119,32 @@
     private void btnRegister_Click(object sender, EventArgs e)
     {
         RegistrationFormUI registrationForm = new RegistrationFormUI();
-        registrationForm.ShowDialog();
+        if (registrationForm.ShowDialog() == DialogResult.OK)
+        {
+            string username = registrationForm.GetRegisteredUsername();
+            string password = registrationForm.GetRegisteredPassword();
+
+            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+            {
+                int userId = databaseManager.AuthenticateUser(username, password);
+                if (userId != -1)
+                {
+                    MessageBox.Show("Registration successful! You are now logged in.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    UserId = userId;
+                    DialogResult = DialogResult.OK;
+                    Close();
+                }
+                else
+                {
+                    MessageBox.Show("Invalid username or password. Please try again.", "Authentication Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtPassword.Clear();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please enter both a username and password.", "Authentication Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
+
 }

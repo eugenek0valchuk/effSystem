@@ -1,56 +1,72 @@
 ﻿public class RegistrationFormUI : BaseForm
 {
-    private CustomTextBox txtUsername;
-    private CustomTextBox txtPassword;
-    private CustomButton btnSubmit;
+    private TextBox txtUsername;
+    private TextBox txtPassword;
+    private Button btnSubmit;
     private DatabaseManager databaseManager;
+    private string registeredUsername;
+    private string registeredPassword;
 
     public RegistrationFormUI()
     {
         InitializeComponents();
         databaseManager = new DatabaseManager();
     }
+
     protected override void ApplyCommonDesign()
     {
         base.ApplyCommonDesign();
         Text = "Registration Form";
         Size = new Size(300, 200);
+        StartPosition = FormStartPosition.CenterScreen;
+        FormBorderStyle = FormBorderStyle.FixedSingle;
+        MaximizeBox = false;
     }
+
+    public string GetRegisteredUsername()
+    {
+        return registeredUsername;
+    }
+
+    public string GetRegisteredPassword()
+    {
+        return registeredPassword;
+    }
+
     private void InitializeComponents()
     {
-        Text = "Registration Form";
-        Size = new System.Drawing.Size(300, 200);
-
-        var lblUsername = new CustomLabel
+        Label lblUsername = new Label
         {
             Text = "Username:",
-            Location = new System.Drawing.Point(20, 20),
+            Location = new Point(20, 20),
+            AutoSize = true
         };
 
-        txtUsername = new CustomTextBox
+        txtUsername = new TextBox
         {
-            Location = new System.Drawing.Point(120, 20),
-            Size = new System.Drawing.Size(150, 25),
+            Location = new Point(120, 20),
+            Size = new Size(150, 25)
         };
 
-        var lblPassword = new CustomLabel
+        Label lblPassword = new Label
         {
             Text = "Password:",
-            Location = new System.Drawing.Point(20, 60),
+            Location = new Point(20, 60),
+            AutoSize = true
         };
 
-        txtPassword = new CustomTextBox
+        txtPassword = new TextBox
         {
-            Location = new System.Drawing.Point(120, 60),
-            Size = new System.Drawing.Size(150, 25),
-            PasswordChar = '*',
+            Location = new Point(120, 60),
+            Size = new Size(150, 25),
+            PasswordChar = '*'
         };
 
-        btnSubmit = new CustomButton
+        btnSubmit = new Button
         {
             Text = "Submit",
-            Location = new System.Drawing.Point(100, 110),
-            Size = new System.Drawing.Size(100, 30),
+            Location = new Point(50, 110),
+            Size = new Size(80, 30)
         };
         btnSubmit.Click += btnSubmit_Click;
 
@@ -60,6 +76,7 @@
         Controls.Add(txtPassword);
         Controls.Add(btnSubmit);
     }
+
     private void btnSubmit_Click(object sender, EventArgs e)
     {
         string username = txtUsername.Text;
@@ -70,6 +87,9 @@
             if (databaseManager.RegisterUser(username, password))
             {
                 MessageBox.Show("Registration successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                registeredUsername = username;
+                registeredPassword = password;
+                DialogResult = DialogResult.OK;
                 Close();
             }
             else
