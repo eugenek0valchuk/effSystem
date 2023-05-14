@@ -1,8 +1,8 @@
-﻿public class RegistrationFormUI : Form
+﻿public class RegistrationFormUI : BaseForm
 {
-    private TextBox txtUsername;
-    private TextBox txtPassword;
-    private Button btnSubmit;
+    private CustomTextBox txtUsername;
+    private CustomTextBox txtPassword;
+    private CustomButton btnSubmit;
     private DatabaseManager databaseManager;
 
     public RegistrationFormUI()
@@ -13,44 +13,39 @@
 
     private void InitializeComponents()
     {
-        // Set form properties
         Text = "Registration Form";
         Size = new System.Drawing.Size(300, 200);
-        StartPosition = FormStartPosition.CenterScreen;
-        FormBorderStyle = FormBorderStyle.FixedSingle;
-        MaximizeBox = false;// Create controls
-        Label lblUsername = new Label
+
+        var lblUsername = new CustomLabel
         {
             Text = "Username:",
             Location = new System.Drawing.Point(20, 20),
-            AutoSize = true
         };
 
-        txtUsername = new TextBox
+        txtUsername = new CustomTextBox
         {
             Location = new System.Drawing.Point(120, 20),
-            Size = new System.Drawing.Size(150, 25)
+            Size = new System.Drawing.Size(150, 25),
         };
 
-        Label lblPassword = new Label
+        var lblPassword = new CustomLabel
         {
             Text = "Password:",
             Location = new System.Drawing.Point(20, 60),
-            AutoSize = true
         };
 
-        txtPassword = new TextBox
+        txtPassword = new CustomTextBox
         {
             Location = new System.Drawing.Point(120, 60),
             Size = new System.Drawing.Size(150, 25),
-            PasswordChar = '*'
+            PasswordChar = '*',
         };
 
-        btnSubmit = new Button
+        btnSubmit = new CustomButton
         {
             Text = "Submit",
             Location = new System.Drawing.Point(100, 110),
-            Size = new System.Drawing.Size(100, 30)
+            Size = new System.Drawing.Size(100, 30),
         };
         btnSubmit.Click += btnSubmit_Click;
 
@@ -60,7 +55,6 @@
         Controls.Add(txtPassword);
         Controls.Add(btnSubmit);
     }
-
     private void btnSubmit_Click(object sender, EventArgs e)
     {
         string username = txtUsername.Text;

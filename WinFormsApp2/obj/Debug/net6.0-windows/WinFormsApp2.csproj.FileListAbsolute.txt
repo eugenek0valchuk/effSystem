@@ -22,3 +22,4 @@ D:\Projects\WinFormsApp2\WinFormsApp2\bin\Debug\net6.0-windows\runtimes\win\lib\
 D:\Projects\WinFormsApp2\WinFormsApp2\obj\Debug\net6.0-windows\WinFormsApp2.csproj.CopyComplete
 D:\Projects\WinFormsApp2\WinFormsApp2\obj\Debug\net6.0-windows\CalculationInfoFormUI.resources
 D:\Projects\WinFormsApp2\WinFormsApp2\obj\Debug\net6.0-windows\WinFormsApp2.csproj.GenerateResource.cache
+D:\Projects\WinFormsApp2\WinFormsApp2\obj\Debug\net6.0-windows\LoginFormUI.resources

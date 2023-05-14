@@ -3,16 +3,15 @@ using System.Data.SqlClient;
 
 public class DatabaseManager
 {
-    private string connectionString = "Server=(localdb)\\MSSQLLocalDB;Trusted_Connection=True;MultipleActiveResultSets=true";
+    private readonly string connectionString = "Server=(localdb)\\MSSQLLocalDB;Trusted_Connection=True;MultipleActiveResultSets=true";
 
     public void InitializeDatabase()
     {
         try
         {
             if (!IsDatabaseExists())
-            {
                 CreateDatabase();
-            }
+
             CreateTables();
         }
         catch (Exception ex)
@@ -195,7 +194,6 @@ public class DatabaseManager
         }
     }
 
-
     public DataTable GetCalculationHistory(int userId)
     {
         DataTable calculationHistory = new DataTable();
@@ -223,3 +221,5 @@ public class DatabaseManager
         MessageBox.Show("Database Error: " + message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
     }
 }
+
+

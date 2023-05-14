@@ -1,4 +1,4 @@
-﻿public class CalculationFormUI : Form
+﻿public class CalculationFormUI : BaseForm
 {
     private TextBox txtInitialInvestment;
     private TextBox txtDiscountRate;
@@ -39,13 +39,13 @@
 
         var labelsAndTooltips = new[]
         {
-            new { LabelText = "Initial Investment:", Icon = SystemIcons.Information, TooltipText = "The initial amount of money invested in the project." },
-            new { LabelText = "Discount Rate (%):", Icon = SystemIcons.Information, TooltipText = "The rate at which future cash flows are discounted to determine their present value." },
-            new { LabelText = "Cash Flows (comma-separated):", Icon = SystemIcons.Information, TooltipText = "The cash inflows or outflows for each period, separated by commas." },
-            new { LabelText = "Inflation Rate (%):", Icon = SystemIcons.Information, TooltipText = "The expected rate of inflation affecting the project." },
-            new { LabelText = "Tax Rate (%):", Icon = SystemIcons.Information, TooltipText = "The tax rate applied to the cash flows." },
-            new { LabelText = "Political Stability Rating (1-10):", Icon = SystemIcons.Information, TooltipText = "The rating representing the political stability affecting the project. Enter a value between 1 and 10.\n\nExamples:\n1 - Very low stability\n5 - Medium stability\n10 - Very high stability" }
-        };
+        new { LabelText = "Initial Investment:", Icon = SystemIcons.Information, TooltipText = "The initial amount of money invested in the project." },
+        new { LabelText = "Discount Rate (%):", Icon = SystemIcons.Information, TooltipText = "The rate at which future cash flows are discounted to determine their present value." },
+        new { LabelText = "Cash Flows (comma-separated):", Icon = SystemIcons.Information, TooltipText = "The cash inflows or outflows for each period, separated by commas." },
+        new { LabelText = "Inflation Rate (%):", Icon = SystemIcons.Information, TooltipText = "The expected rate of inflation affecting the project." },
+        new { LabelText = "Tax Rate (%):", Icon = SystemIcons.Information, TooltipText = "The tax rate applied to the cash flows." },
+        new { LabelText = "Political Stability Rating (1-10):", Icon = SystemIcons.Information, TooltipText = "The rating representing the political stability affecting the project. Enter a value between 1 and 10.\n\nExamples:\n1 - Very low stability\n5 - Medium stability\n10 - Very high stability" }
+    };
 
         const int margin = 20;
         const int labelHeight = 30;
@@ -87,12 +87,13 @@
             };
             textBoxes.Add(textBox);
             Controls.Add(textBox);
-        }    // Evaluate button
+        }
+
         Button btnEvaluate = new Button
         {
             Text = "Evaluate",
-            Location = new Point(350, 350),
-            Size = new Size(150, 40),
+            Location = new Point(margin, margin + labelsAndTooltips.Length * (labelHeight + labelIconSpacing)),
+            Size = new Size(120, 40),
             Font = buttonFont
         };
         btnEvaluate.Click += btnEvaluate_Click;

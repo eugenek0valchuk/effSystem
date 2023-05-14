@@ -1,8 +1,9 @@
-﻿public class MainMenuFormUI : Form
+﻿public class MainMenuFormUI : BaseForm
 {
-    private Button btnCalculation;
-    private Button btnHistory;
+    private CustomButton btnCalculation;
+    private CustomButton btnHistory;
     private int userId;
+
     public MainMenuFormUI(int userId)
     {
         this.userId = userId;
@@ -14,19 +15,16 @@
         Text = "Main Menu";
         Size = new System.Drawing.Size(400, 300);
 
-        btnCalculation = new Button
+        btnCalculation = new CustomButton
         {
             Text = "Open Calculation",
             Location = new System.Drawing.Point(100, 100),
-            Size = new System.Drawing.Size(200, 40),
-            Font = new Font("Arial", 12, FontStyle.Bold)
-        }; 
-        btnHistory = new Button
+        };
+
+        btnHistory = new CustomButton
         {
             Text = "View Calculation History",
             Location = new System.Drawing.Point(100, 160),
-            Size = new System.Drawing.Size(200, 40),
-            Font = new Font("Arial", 12, FontStyle.Bold)
         };
 
         btnCalculation.Click += btnCalculation_Click;
@@ -41,6 +39,7 @@
         CalculationFormUI calculationForm = new CalculationFormUI(userId);
         calculationForm.ShowDialog();
     }
+
     private void btnHistory_Click(object sender, EventArgs e)
     {
         CalculationInfoFormUI historyForm = new CalculationInfoFormUI(userId);

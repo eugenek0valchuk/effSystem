@@ -4,10 +4,10 @@
     <Compile Update="UIForms\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="UIForms\CalculationInfoFormUI.cs">
+    <Compile Update="UIForms\CalculationFormUI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="UIForms\CalculationFormUI.cs">
+    <Compile Update="UIForms\CalculationInfoFormUI.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="UIForms\MainMenuFormUI.cs">

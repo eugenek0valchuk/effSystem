@@ -1,10 +1,6 @@
-﻿using System;
-using System.Data;
-using System.Drawing;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Data;
 
-public class CalculationInfoFormUI : Form
+public class CalculationInfoFormUI : BaseForm
 {
     private DataGridView dgvCalculationHistory;
     private int userId;

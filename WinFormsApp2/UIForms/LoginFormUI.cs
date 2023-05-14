@@ -1,4 +1,4 @@
-﻿public class LoginFormUI : Form
+﻿public class LoginFormUI : BaseForm
 {
     private TextBox txtUsername;
     private TextBox txtPassword;
