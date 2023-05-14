@@ -15,9 +15,6 @@
 
     private void InitializeComponents()
     {
-        Text = "User Control Panel";
-        Size = new Size(400, 300);
-
         Label lblUsername = new Label
         {
             Text = "Username:",
@@ -27,7 +24,7 @@
 
         TextBox txtUsername = new TextBox
         {
-            Location = new Point(120, 20),
+            Location = new Point(140, 20),
             Size = new Size(150, 25),
             Text = databaseManager.GetUsername(userId),
             Enabled = false
@@ -42,7 +39,7 @@
 
         txtNewUsername = new TextBox
         {
-            Location = new Point(120, 60),
+            Location = new Point(140, 60),
             Size = new Size(150, 25)
         };
 
@@ -55,7 +52,7 @@
 
         txtNewPassword = new TextBox
         {
-            Location = new Point(120, 100),
+            Location = new Point(140, 100),
             Size = new Size(150, 25),
             PasswordChar = '*'
         };
@@ -75,6 +72,8 @@
         Controls.Add(lblNewPassword);
         Controls.Add(txtNewPassword);
         Controls.Add(btnUpdateCredentials);
+
+        ApplyCommonDesign();
     }
 
     private void btnUpdateCredentials_Click(object sender, EventArgs e)
@@ -111,6 +110,6 @@
     {
         base.ApplyCommonDesign();
         Text = "User Control Panel";
-        Size = new Size(400, 300);
+        Size = new Size(350, 300);
     }
 }
