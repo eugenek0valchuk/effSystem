@@ -6,7 +6,7 @@
     private Button btnRegister;
     private DatabaseManager databaseManager;
 
-    public int UserId { get; set; }
+    public int UserId { get; private set; }
 
     public LoginFormUI()
     {
@@ -17,55 +17,54 @@
 
     private void InitializeComponents()
     {
-        // Set form properties
         Text = "Login Form";
-        Size = new System.Drawing.Size(300, 200);
+        Size = new Size(300, 200);
         StartPosition = FormStartPosition.CenterScreen;
         FormBorderStyle = FormBorderStyle.FixedSingle;
         MaximizeBox = false;
 
-        // Create controls
         Label lblUsername = new Label
         {
             Text = "Username:",
-            Location = new System.Drawing.Point(20, 20),
+            Location = new Point(20, 20),
             AutoSize = true
         };
 
         txtUsername = new TextBox
         {
-            Location = new System.Drawing.Point(120, 20),
-            Size = new System.Drawing.Size(150, 25)
+            Location = new Point(120, 20),
+            Size = new Size(150, 25)
         };
 
         Label lblPassword = new Label
         {
             Text = "Password:",
-            Location = new System.Drawing.Point(20, 60),
+            Location = new Point(20, 60),
             AutoSize = true
-        }; txtPassword = new TextBox
+        };
+
+        txtPassword = new TextBox
         {
-            Location = new System.Drawing.Point(120, 60),
-            Size = new System.Drawing.Size(150, 25),
+            Location = new Point(120, 60),
+            Size = new Size(150, 25),
             PasswordChar = '*'
         };
 
         btnLogin = new Button
         {
             Text = "Login",
-            Location = new System.Drawing.Point(50, 110),
-            Size = new System.Drawing.Size(80, 30)
+            Location = new Point(50, 110),
+            Size = new Size(80, 30)
         };
         btnLogin.Click += btnLogin_Click;
 
         btnRegister = new Button
         {
             Text = "Register",
-            Location = new System.Drawing.Point(150, 110),
-            Size = new System.Drawing.Size(80, 30)
+            Location = new Point(150, 110),
+            Size = new Size(80, 30)
         };
         btnRegister.Click += btnRegister_Click;
-
         Controls.Add(lblUsername);
         Controls.Add(txtUsername);
         Controls.Add(lblPassword);
@@ -79,28 +78,26 @@
         string username = txtUsername.Text;
         string password = txtPassword.Text;
 
-        if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+        if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
         {
-            int userId = databaseManager.AuthenticateUser(username, password);
-            if (userId != -1)
-            {
-                MessageBox.Show("Authentication successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                UserId = userId;
-                this.DialogResult = DialogResult.OK;
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show("Invalid username or password. Please try again.", "Authentication Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtPassword.Clear();
-            }
+            MessageBox.Show("Please enter both a username and password.", "Authentication Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        int userId = databaseManager.AuthenticateUser(username, password);
+        if (userId != -1)
+        {
+            MessageBox.Show("Authentication successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            UserId = userId;
+            DialogResult = DialogResult.OK;
+            Close();
         }
         else
         {
-            MessageBox.Show("Please enter both a username and password.", "Authentication Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show("Invalid username or password. Please try again.", "Authentication Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            txtPassword.Clear();
         }
     }
-
 
     private void btnRegister_Click(object sender, EventArgs e)
     {

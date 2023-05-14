@@ -19,5 +19,8 @@
     <Compile Update="UIForms\RegistrationFormUI.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="UIForms\UserControlPanelUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

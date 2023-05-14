@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 
 public class DatabaseManager
 {
@@ -17,19 +16,6 @@ public class DatabaseManager
         catch (Exception ex)
         {
             ShowErrorMessage("Error initializing the database: " + ex.Message);
-        }
-    }
-
-    public void CreateDatabaseAndTables()
-    {
-        try
-        {
-            CreateDatabase();
-            CreateTables();
-        }
-        catch (Exception ex)
-        {
-            ShowErrorMessage("Error creating the database and tables: " + ex.Message);
         }
     }
 
@@ -140,7 +126,6 @@ public class DatabaseManager
             return count > 0;
         }
     }
-
     public int AuthenticateUser(string username, string password)
     {
         string authenticateUserQuery = "SELECT Id FROM [User] WHERE Username = @Username AND Password = @Password";
@@ -164,11 +149,71 @@ public class DatabaseManager
         }
     }
 
-    public bool SaveCalculation(int userId, double initialInvestment, double discountRate, double inflationRate, double taxRate, int politicalStabilityRating, double npv)
+    public List<Calculation> GetCalculationHistory(int userId)
     {
-        string saveCalculationQuery = @"
-        INSERT INTO [Calculation] (UserId, InitialInvestment, DiscountRate, InflationRate, TaxRate, PoliticalStabilityRating, NPV)
-        VALUES (@UserId, @InitialInvestment, @DiscountRate, @InflationRate, @TaxRate, @PoliticalStabilityRating, @NPV)";
+        List<Calculation> calculationHistory = new List<Calculation>();
+        string query = "SELECT * FROM [Calculation] WHERE UserId = @UserId";
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        using (SqlCommand command = new SqlCommand(query, connection))
+        {
+            try
+            {
+                connection.Open();
+                command.Parameters.AddWithValue("@UserId", userId);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Calculation calculation = new Calculation
+                    {
+                        Id = (int)reader["Id"],
+                        UserId = (int)reader["UserId"],
+                        InitialInvestment = (decimal)reader["InitialInvestment"],
+                        DiscountRate = (decimal)reader["DiscountRate"],
+                        InflationRate = (decimal)reader["InflationRate"],
+                        TaxRate = (decimal)reader["TaxRate"],
+                        PoliticalStabilityRating = (int)reader["PoliticalStabilityRating"],
+                        NPV = (decimal)reader["NPV"]
+                    };
+
+                    calculationHistory.Add(calculation);
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("Error retrieving calculation history: " + ex.Message);
+            }
+        }
+        return calculationHistory;
+    }
+
+    public string GetUsername(int userId)
+    {
+        string getUsernameQuery = "SELECT Username FROM [User] WHERE Id = @UserId";
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        using (SqlCommand command = new SqlCommand(getUsernameQuery, connection))
+        {
+            try
+            {
+                connection.Open();
+                command.Parameters.AddWithValue("@UserId", userId);
+                object result = command.ExecuteScalar();
+                return result != null ? result.ToString() : string.Empty;
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage("Error retrieving the username: " + ex.Message);
+                return string.Empty;
+            }
+        }
+    }
+
+    public bool SaveCalculation(int userId, decimal initialInvestment, decimal discountRate, decimal inflationRate, decimal taxRate, decimal politicalStabilityRating, decimal npv)
+    {
+        string saveCalculationQuery = "INSERT INTO Calculation (UserId, InitialInvestment, DiscountRate, InflationRate, TaxRate, PoliticalStabilityRating, NPV) " +
+                                      "VALUES (@UserId, @InitialInvestment, @DiscountRate, @InflationRate, @TaxRate, @PoliticalStabilityRating, @NPV)";
 
         using (SqlConnection connection = new SqlConnection(connectionString))
         using (SqlCommand command = new SqlCommand(saveCalculationQuery, connection))
@@ -186,34 +231,46 @@ public class DatabaseManager
                 int rowsAffected = command.ExecuteNonQuery();
                 return rowsAffected > 0;
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
-                ShowErrorMessage("Error saving the calculation: " + ex.Message);
+                ShowErrorMessage("Error saving calculation: " + ex.Message);
                 return false;
             }
         }
     }
-
-    public DataTable GetCalculationHistory(int userId)
+    public bool UpdateUserCredentials(int userId, string newUsername, string newPassword)
     {
-        DataTable calculationHistory = new DataTable();
-        string query = "SELECT InitialInvestment, DiscountRate, InflationRate, TaxRate, PoliticalStabilityRating, NPV FROM [Calculation] WHERE UserId = @UserId";
-
+        string updateUserQuery = "UPDATE [User] SET Username = @Username, Password = @Password WHERE Id = @UserId";
         using (SqlConnection connection = new SqlConnection(connectionString))
-        using (SqlCommand command = new SqlCommand(query, connection))
-        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+        using (SqlCommand command = new SqlCommand(updateUserQuery, connection))
         {
             try
             {
+                connection.Open();
                 command.Parameters.AddWithValue("@UserId", userId);
-                adapter.Fill(calculationHistory);
+                command.Parameters.AddWithValue("@Username", newUsername);
+                command.Parameters.AddWithValue("@Password", newPassword);
+                int rowsAffected = command.ExecuteNonQuery();
+                return rowsAffected > 0;
             }
             catch (Exception ex)
             {
-                ShowErrorMessage("Error retrieving calculation history: " + ex.Message);
+                ShowErrorMessage("Error updating user credentials: " + ex.Message);
+                return false;
             }
         }
-        return calculationHistory;
+    }
+    public bool UsernameExists(string username)
+    {
+        string checkUsernameQuery = "SELECT COUNT(*) FROM [User] WHERE Username = @Username"; 
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        using (SqlCommand command = new SqlCommand(checkUsernameQuery, connection))
+        {
+            command.Parameters.AddWithValue("@Username", username);
+            connection.Open();
+            int count = Convert.ToInt32(command.ExecuteScalar());
+            return count > 0;
+        }
     }
 
     private void ShowErrorMessage(string message)
@@ -221,5 +278,3 @@ public class DatabaseManager
         MessageBox.Show("Database Error: " + message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
     }
 }
-
-
